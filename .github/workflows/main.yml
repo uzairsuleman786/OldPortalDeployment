@@ -22,11 +22,6 @@ jobs:
         Start-Process msiexec.exe -ArgumentList '/i pac.msi /quiet /norestart' -NoNewWindow -Wait
         $env:Path += "C:\Program Files (x86)\Microsoft Power Platform CLI\"
 
-    - name: Verify Power Platform CLI Installation
-      run: |
-        dir "C:\Users\runneradmin\AppData\Local\Temp\powerplatform-actions-dbKq4Z"
-        pac --version
-
     - name: Authenticate with Power Platform
       run: |
         pac auth create --url https://org9ef0d3ff.crm.dynamics.com --client-id ${{ secrets.CLIENT_ID }} --client-secret ${{ secrets.CLIENT_SECRET }} --tenant ${{ secrets.TENANT_ID }}
