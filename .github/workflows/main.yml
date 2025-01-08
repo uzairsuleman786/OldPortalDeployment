@@ -17,11 +17,6 @@ jobs:
       run: |
         Invoke-WebRequest -Uri https://aka.ms/PowerAppsCLI -OutFile pac.msi
         Start-Process msiexec.exe -ArgumentList '/i pac.msi /quiet /norestart' -NoNewWindow -Wait
-        $env:Path += ";C:\Program Files (x86)\Microsoft Power Platform CLI\"
-
-    - name: Verify Power Platform CLI Installation
-      run: |
-        pac --version
 
     - name: Authenticate with Power Platform
       run: |
