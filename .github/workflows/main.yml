@@ -23,13 +23,18 @@ jobs:
 
     - name: Add PAC Path to Environment
       run: |
-        # Get the directory where pac is installed
+        # Retrieve the PAC path from the environment variable
         $pacPath = $env:POWERPLATFORMTOOLS_PACPATH
-        # Change the working directory to where pac is installed
-        Set-Location -Path $pacPath
-        # Add the pac installation directory to the PATH temporarily for this step
-        $env:Path += ";" + $pacPath
-        # Debug: Check if pac is available in the current path
+        # Ensure that pac.exe exists in the directory
+        if (Test-Path "$pacPath\pac.exe") {
+          # Add the directory containing pac.exe to the PATH
+          $env:Path += ";" + $pacPath
+          Write-Host "PAC path added to environment: $pacPath"
+        } else {
+          Write-Host "pac.exe not found in $pacPath"
+          exit 1
+        }
+        # Debug: Show the updated PATH
         echo $env:Path
 
     - name: Verify Power Platform CLI Installation
