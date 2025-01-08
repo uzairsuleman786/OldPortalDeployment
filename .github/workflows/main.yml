@@ -1,0 +1,38 @@
+name: Export Power Pages to GitHub
+
+on:
+  schedule:
+    - cron: '0 2 * * *' # Run daily at 2 AM
+  workflow_dispatch: # Allow manual triggers
+
+jobs:
+  export:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Install Power Platform CLI
+      run: |
+        winget install -e --id Microsoft.PowerPlatform.CLI
+
+    - name: Authenticate with Power Platform
+      run: |
+        pac auth create --url https://<source-environment>.crm.dynamics.com --client-id ${{ secrets.CLIENT_ID }} --client-secret ${{ secrets.CLIENT_SECRET }} --tenant ${{ secrets.TENANT_ID }}
+
+    - name: Export Solution
+      run: |
+        pac solution export --name "<solution-name>" --path "exported_solution.zip" --managed
+
+    - name: Extract Solution Files
+      run: |
+        Expand-Archive -Path exported_solution.zip -DestinationPath ./exported_solution -Force
+
+    - name: Push to GitHub
+      run: |
+        git config --global user.name "GitHub Actions"
+        git config --global user.email "actions@github.com"
+        git add ./exported_solution
+        git commit -m "Automated export of Power Pages solution"
+        git push origin main
