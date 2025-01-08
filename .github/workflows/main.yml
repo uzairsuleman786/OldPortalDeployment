@@ -1,9 +1,9 @@
 name: Export Power Pages to GitHub
 
 on:
-  push:
-    branches:
-      - main
+  schedule:
+    - cron: '0 2 * * *' # Run daily at 2 AM
+  workflow_dispatch: # Allow manual triggers
 
 jobs:
   export:
@@ -15,35 +15,21 @@ jobs:
 
     - name: Install Power Platform CLI
       run: |
-        Invoke-WebRequest -Uri https://aka.ms/PowerAppsCLI -OutFile pac.msi
-        Start-Process msiexec.exe -ArgumentList '/i pac.msi /quiet /norestart' -NoNewWindow -Wait
-        $env:Path += ";C:\Users\uzair\.vscode\extensions\microsoft-isvexptools.powerplatform-vscode-2.0.76"
-
-    - name: Verify Power Platform CLI Installation
-      run: |
-        dir "C:\Users\uzair\.vscode\extensions\microsoft-isvexptools.powerplatform-vscode-2.0.76"
-        pac --version
-
-    - name: Debug PATH
-      run: echo $env:Path
+        winget install -e --id Microsoft.PowerPlatform.CLI
 
     - name: Authenticate with Power Platform
-      shell: pwsh
       run: |
         pac auth create --url https://org9ef0d3ff.crm.dynamics.com --client-id ${{ secrets.CLIENT_ID }} --client-secret ${{ secrets.CLIENT_SECRET }} --tenant ${{ secrets.TENANT_ID }}
 
     - name: Export Solution
-      shell: pwsh
       run: |
         pac solution export --name "<solution-name>" --path "exported_solution.zip" --managed
 
     - name: Extract Solution Files
-      shell: pwsh
       run: |
         Expand-Archive -Path exported_solution.zip -DestinationPath ./exported_solution -Force
 
     - name: Push to GitHub
-      shell: pwsh
       run: |
         git config --global user.name "GitHub Actions"
         git config --global user.email "actions@github.com"
