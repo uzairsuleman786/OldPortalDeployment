@@ -21,21 +21,11 @@ jobs:
         Invoke-WebRequest -Uri https://aka.ms/PowerAppsCLI -OutFile pac.msi
         Start-Process msiexec.exe -ArgumentList '/i pac.msi /quiet /norestart' -NoNewWindow -Wait
 
-    - name: Add PAC Path to Environment
+    - name: Add pac to PATH
+      shell: pwsh
       run: |
-        # Retrieve the PAC path from the environment variable
-        $pacPath = $env:POWERPLATFORMTOOLS_PACPATH
-        # Ensure that pac.exe exists in the directory
-        if (Test-Path "$pacPath\pac.exe") {
-          # Add the directory containing pac.exe to the PATH
-          $env:Path += ";" + $pacPath
-          Write-Host "PAC path added to environment: $pacPath"
-        } else {
-          Write-Host "pac.exe not found in $pacPath"
-          exit 1
-        }
-        # Debug: Show the updated PATH
-        echo $env:Path
+        $pac = (Get-Item "$env:POWERPLATFORMTOOLS_PACPATH").Directory.FullName;
+        "$pac" | Out-File -FilePath $env:GITHUB_PATH -Append
 
     - name: Verify Power Platform CLI Installation
       run: |
