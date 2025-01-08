@@ -1,9 +1,9 @@
 name: Export Power Pages to GitHub
 
 on:
-  schedule:
-    - cron: '0 2 * * *' # Run daily at 2 AM
-  workflow_dispatch: # Allow manual triggers
+  push:
+    branches:
+      - main
 
 jobs:
   export:
@@ -15,7 +15,13 @@ jobs:
 
     - name: Install Power Platform CLI
       run: |
-        winget install -e --id Microsoft.PowerPlatform.CLI
+        Invoke-WebRequest -Uri https://aka.ms/PowerAppsCLI -OutFile pac.msi
+        Start-Process msiexec.exe -ArgumentList '/i pac.msi /quiet /norestart' -NoNewWindow -Wait
+        $env:Path += "C:\Program Files (x86)\Microsoft Power Platform CLI\"
+
+    - name: Verify Power Platform CLI Installation
+      run: |
+        pac --version
 
     - name: Authenticate with Power Platform
       run: |
