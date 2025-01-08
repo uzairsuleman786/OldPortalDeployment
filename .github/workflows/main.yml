@@ -19,7 +19,7 @@ jobs:
 
     - name: Authenticate with Power Platform
       run: |
-        pac auth create --url https://<source-environment>.crm.dynamics.com --client-id ${{ secrets.CLIENT_ID }} --client-secret ${{ secrets.CLIENT_SECRET }} --tenant ${{ secrets.TENANT_ID }}
+        pac auth create --url https://org9ef0d3ff.crm.dynamics.com --client-id ${{ secrets.CLIENT_ID }} --client-secret ${{ secrets.CLIENT_SECRET }} --tenant ${{ secrets.TENANT_ID }}
 
     - name: Export Solution
       run: |
