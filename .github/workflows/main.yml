@@ -24,7 +24,7 @@ jobs:
 
     - name: Verify Power Platform CLI Installation
       run: |
-        dir "C:\Program Files (x86)\Microsoft Power Platform CLI\"
+        dir "C:\Users\runneradmin\AppData\Local\Temp\powerplatform-actions-dbKq4Z"
         pac --version
 
     - name: Authenticate with Power Platform
