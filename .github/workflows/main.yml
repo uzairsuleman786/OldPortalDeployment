@@ -13,19 +13,18 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v3
 
-    - name: Install Power Platform CLI
+    - name: Locate Power Platform CLI
       run: |
-        Invoke-WebRequest -Uri https://aka.ms/PowerAppsCLI -OutFile pac.msi
-        Start-Process msiexec.exe -ArgumentList '/i pac.msi /quiet /norestart' -NoNewWindow -Wait
-        $env:Path += ";C:\Program Files (x86)\Microsoft Power Platform CLI\"
+        $pacPath = Get-Command pac | Select-Object -ExpandProperty Path
+        if ($pacPath) {
+          $env:Path += ";" + [System.IO.Path]::GetDirectoryName($pacPath)
+        } else {
+          Write-Error "Power Platform CLI not found."
+        }
 
     - name: Verify Power Platform CLI Installation
       run: |
-        dir "C:\Program Files (x86)\Microsoft Power Platform CLI\"
         pac --version
-
-    - name: Debug PATH
-      run: echo $env:Path
 
     - name: Authenticate with Power Platform
       shell: pwsh
