@@ -17,11 +17,11 @@ jobs:
       run: |
         Invoke-WebRequest -Uri https://aka.ms/PowerAppsCLI -OutFile pac.msi
         Start-Process msiexec.exe -ArgumentList '/i pac.msi /quiet /norestart' -NoNewWindow -Wait
-        $env:Path += ";C:\Program Files (x86)\Microsoft Power Platform CLI\"
+        $env:Path += ";C:\Users\uzair\.vscode\extensions\microsoft-isvexptools.powerplatform-vscode-2.0.76"
 
     - name: Verify Power Platform CLI Installation
       run: |
-        dir "C:\Program Files (x86)\Microsoft Power Platform CLI\"
+        dir "C:\Users\uzair\.vscode\extensions\microsoft-isvexptools.powerplatform-vscode-2.0.76"
         pac --version
 
     - name: Debug PATH
