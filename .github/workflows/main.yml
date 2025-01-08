@@ -13,6 +13,9 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v3
 
+    - name: Install Power Platform Tools
+      uses: microsoft/powerplatform-actions/actions-install@v1
+
     - name: Install Power Platform CLI
       run: |
         Invoke-WebRequest -Uri https://aka.ms/PowerAppsCLI -OutFile pac.msi
