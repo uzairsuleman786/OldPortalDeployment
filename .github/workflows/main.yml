@@ -23,8 +23,19 @@ jobs:
 
     - name: Add PAC Path to Environment
       run: |
-        $env:Path += ";" + $env:POWERPLATFORMTOOLS_PACPATH
-        echo $env:Path  # To debug and ensure it's added correctly
+        # Get the directory where pac is installed
+        $pacPath = $env:POWERPLATFORMTOOLS_PACPATH
+        # Change the working directory to where pac is installed
+        Set-Location -Path $pacPath
+        # Add the pac installation directory to the PATH temporarily for this step
+        $env:Path += ";" + $pacPath
+        # Debug: Check if pac is available in the current path
+        echo $env:Path
+
+    - name: Verify Power Platform CLI Installation
+      run: |
+        # Check if pac is accessible
+        pac --version
 
     - name: Authenticate with Power Platform
       run: |
