@@ -13,9 +13,11 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v3
 
-    - name: Install Power Platform CLI
-      run: |
-        winget install -e --id Microsoft.PowerPlatform.CLI
+    - name: Install Power Platform Tools
+      id: InstallPowerPlatformTools
+      uses: microsoft/powerplatform-actions/actions-install@latest
+      with:
+          nuget-feed-override: 'D:\nuget-packages\microsoft.powerapps.cli'
 
     - name: Authenticate with Power Platform
       run: |
