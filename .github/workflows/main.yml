@@ -27,11 +27,6 @@ jobs:
         $pac = (Get-Item "$env:POWERPLATFORMTOOLS_PACPATH").Directory.FullName;
         "$pac" | Out-File -FilePath $env:GITHUB_PATH -Append
 
-    - name: Verify Power Platform CLI Installation
-      run: |
-        # Check if pac is accessible
-        pac --version
-
     - name: Authenticate with Power Platform
       run: |
         pac auth create --url https://org9ef0d3ff.crm.dynamics.com --client-id ${{ secrets.CLIENT_ID }} --client-secret ${{ secrets.CLIENT_SECRET }} --tenant ${{ secrets.TENANT_ID }}
