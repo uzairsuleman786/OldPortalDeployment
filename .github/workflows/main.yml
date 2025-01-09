@@ -29,12 +29,12 @@ jobs:
 
     - name: Authenticate with Power Platform
       run: |
-        pac auth create --url "https://org9ef0d3ff.crm.dynamics.com" --applicationId ${{ secrets.CLIENT_ID }} --clientSecret ${{ secrets.CLIENT_SECRET }} --tenant ${{ secrets.TENANT_ID }}
+        pac auth create --name "OLDPORTAL" --url "https://org9ef0d3ff.crm.dynamics.com" --applicationId ${{ secrets.CLIENT_ID }} --clientSecret ${{ secrets.CLIENT_SECRET }} --tenant ${{ secrets.TENANT_ID }}
         
 
     - name: Export Solution
       run: |
-        pac solution export --name "oldPortalSolution" --path "exported_solution.zip" --managed
+        pac paportal download --path "exported_solution.zip" --webSiteId "5fea08ee-97cd-ef11-b8e8-6045bd06243c"
 
     - name: Extract Solution Files
       run: |
