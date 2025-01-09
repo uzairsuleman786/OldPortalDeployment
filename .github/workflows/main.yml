@@ -36,9 +36,23 @@ jobs:
       run: |
         pac paportal download --path "exported_solution.zip" --webSiteId "5fea08ee-97cd-ef11-b8e8-6045bd06243c"
 
+    - name: Verify Downloaded File
+      run: |
+        if (Test-Path -Path "exported_solution.zip") {
+          Write-Host "File downloaded successfully: exported_solution.zip"
+        } else {
+          Write-Host "File not found: exported_solution.zip"
+          exit 1
+        }
+
     - name: Extract Solution Files
       run: |
-        Expand-Archive -Path exported_solution.zip -DestinationPath ./exported_solution -Force
+        Expand-Archive -Path "exported_solution.zip" -DestinationPath "./exported_solution" -Force
+
+    - name: Log Directory Contents
+      run: |
+        Write-Host "Listing files in the current directory:"
+        Get-ChildItem -Path . -Recurse
 
     - name: Push to GitHub
       run: |
