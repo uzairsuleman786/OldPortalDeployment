@@ -42,6 +42,6 @@ jobs:
         pac auth create --name "OLDPORTAL" --url "https://org59515372.crm.dynamics.com" --username "admin@CRM720692.onmicrosoft.com" --password "#W4^eG+p+u5L676wO="
     - name: Import Solution
       run: |
-        pac paportal upload --path "exported_solution.zip"
+        pac paportal upload --path "exported_solution.zip/portalsitetest---site-p8dn9"
 
 
