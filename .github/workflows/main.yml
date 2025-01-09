@@ -34,7 +34,7 @@ jobs:
 
     - name: Export Solution
       run: |
-        pac solution export --name "<solution-name>" --path "exported_solution.zip" --managed
+        pac solution export --name "oldPortalSolution" --path "exported_solution.zip" --managed
 
     - name: Extract Solution Files
       run: |
