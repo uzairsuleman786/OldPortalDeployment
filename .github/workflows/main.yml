@@ -34,11 +34,11 @@ jobs:
 
     - name: Export Solution
       run: |
-        pac paportal download --path "$(System.DefaultWorkingDirectory)/exported_solution.zip" --webSiteId "5fea08ee-97cd-ef11-b8e8-6045bd06243c"
+        pac paportal download --path "exported_solution.zip" --webSiteId "5fea08ee-97cd-ef11-b8e8-6045bd06243c"
 
     - name: Verify Downloaded File
       run: |
-        if (Test-Path -Path "$(System.DefaultWorkingDirectory)/exported_solution.zip") {
+        if (Test-Path -Path "exported_solution.zip") {
           Write-Host "File downloaded successfully: exported_solution.zip"
         } else {
           Write-Host "File not found: exported_solution.zip"
@@ -57,8 +57,7 @@ jobs:
 
     - name: Extract Solution Files
       run: |
-        Expand-Archive -Path "$(System.DefaultWorkingDirectory)/exported_solution.zip" -DestinationPath "$(System.DefaultWorkingDirectory)/exported_solution" -Force
-
+        Expand-Archive -Path "exported_solution.zip" -DestinationPath "./exported_solution" -Force
 
     - name: Push to GitHub
       run: |
