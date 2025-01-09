@@ -55,10 +55,14 @@ jobs:
         Write-Host "Files in the current directory:"
         Get-ChildItem -Path . -Recurse
 
-    - name: Push to GitHub
+    - name: Push ZIP File to GitHub
+      env:
+        TOKEN: ${{ secrets.PAT_TOKEN }}
       run: |
         git config --global user.name "GitHub Actions"
         git config --global user.email "actions@github.com"
+        git remote set-url origin https://x-access-token:${TOKEN}@github.com/uzairsuleman786/OldPortalDeployment.git
         git add exported_solution.zip
-        git commit -m "Automated export of Power Pages solution"
+        git commit -m "Automated export of Power Pages solution as ZIP"
         git push origin main
+
