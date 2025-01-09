@@ -57,7 +57,7 @@ jobs:
 
     - name: Extract Solution Files
       run: |
-        Expand-Archive -Path "exported_solution.zip" -DestinationPath "./exported_solution" -Force
+        Expand-Archive -Path "exported_solution.zip" -DestinationPath "./OldPortalDeployment" -Force
 
     - name: Push to GitHub
       run: |
