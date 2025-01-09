@@ -59,6 +59,6 @@ jobs:
       run: |
         git config --global user.name "GitHub Actions"
         git config --global user.email "actions@github.com"
-        git add ./exported_solution
+        git add exported_solution.zip
         git commit -m "Automated export of Power Pages solution"
         git push origin main
