@@ -39,7 +39,7 @@ jobs:
     
     - name: Authenticate with Power Platform
       run: |
-        pac auth create --name "OLDPORTAL" --url "https://org59515372.crm.dynamics.com" --applicationId ${{ secrets.CLIENT_ID }} --clientSecret ${{ secrets.CLIENT_SECRET }} --tenant ${{ secrets.TENANT_ID }}
+        pac auth create --name "OLDPORTAL" --url "https://org59515372.crm.dynamics.com" --applicationId ${{ secrets.TARGET_CLIENT_ID }} --clientSecret ${{ secrets.TARGET_CLIENT_SECRET }} --tenant ${{ secrets.TENANT_ID }}
     - name: Import Solution
       run: |
         pac paportal upload --path "exported_solution.zip"
