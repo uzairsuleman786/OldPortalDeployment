@@ -29,7 +29,7 @@ jobs:
 
     - name: Authenticate with Power Platform
       run: |
-        pac auth create --url https://org9ef0d3ff.crm.dynamics.com --username ${{ secrets.POWER_PLATFORM_USERNAME }} --password ${{ secrets.POWER_PLATFORM_PASSWORD }} --client-id ${{ secrets.CLIENT_ID }} --client-secret ${{ secrets.CLIENT_SECRET }} --tenant ${{ secrets.TENANT_ID }}
+        pac auth create --url "https://org9ef0d3ff.crm.dynamics.com" --username "admin@CRM720692.onmicrosoft.com" --password "#W4^eG+p+u5L676wO=" --client-id ${{ secrets.CLIENT_ID }} --client-secret ${{ secrets.CLIENT_SECRET }} --tenant ${{ secrets.TENANT_ID }}
         
 
     - name: Export Solution
