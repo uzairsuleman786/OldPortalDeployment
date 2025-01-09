@@ -55,10 +55,6 @@ jobs:
         Write-Host "Files in the current directory:"
         Get-ChildItem -Path . -Recurse
 
-    - name: Extract Solution Files
-      run: |
-        Expand-Archive -Path "exported_solution.zip" -DestinationPath "./OldPortalDeployment" -Force
-
     - name: Push to GitHub
       run: |
         git config --global user.name "GitHub Actions"
