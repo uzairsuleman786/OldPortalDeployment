@@ -10,6 +10,10 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v3
 
+    - name: Create and Switch to a New Branch
+      run: |
+        git checkout -b export-solution-branch
+
     - name: Install Power Platform Tools
       uses: microsoft/powerplatform-actions/actions-install@v1
 
