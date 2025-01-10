@@ -3,7 +3,7 @@ name: Import Power Pages to Target Environment
 on: workflow_dispatch
 
 jobs:
-  export:
+  Import:
     runs-on: windows-latest
 
     steps:
