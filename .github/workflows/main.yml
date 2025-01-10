@@ -1,6 +1,7 @@
 name: Export Power Pages to GitHub
 
-on: workflow_dispatch
+on: 
+  workflow_dispatch
 
 jobs:
   Export:
@@ -27,11 +28,14 @@ jobs:
     - name: Authenticate with Power Platform
       run: |
         pac auth create --name "OLDPORTAL" --url "https://org9ef0d3ff.crm.dynamics.com" --applicationId ${{ secrets.CLIENT_ID }} --clientSecret ${{ secrets.CLIENT_SECRET }} --tenant ${{ secrets.TENANT_ID }}
-        
+
+    - name: Create New Branch
+      run: |
+        git checkout -b export-$(date +%Y%m%d%H%M%S)
 
     - name: Export Solution
       run: |
-        pac paportal download --path "exported_solution.zip" --webSiteId "5fea08ee-97cd-ef11-b8e8-6045bd06243c"
+        pac paportal download --path "exported_solution.zip" --webSiteId "5fea08ee-97cd-ef11-b8e8-6045bd06243c" -o
 
     - name: Verify Downloaded File
       run: |
@@ -53,11 +57,11 @@ jobs:
         Get-ChildItem -Path . -Recurse
 
     - name: Push ZIP File to GitHub
+      env:
+        PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
       run: |
         git config --global user.name "GitHub Actions"
         git config --global user.email "actions@github.com"
-        git remote set-url origin https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com/uzairsuleman786/OldPortalDeployment.git
-        git branch NewBranch
         git add exported_solution.zip
         git commit -m "Automated export of Power Pages solution as ZIP"
-        git push origin main
+        git push -u origin $(git rev-parse --abbrev-ref HEAD)
