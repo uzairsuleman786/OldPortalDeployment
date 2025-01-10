@@ -1,21 +1,12 @@
 name: Import Power Pages to Target Environment
-# Export solution from DEV environment
-# Unpack, update version in Solution.xml and .nuspec file
-# Pack and create branch
- 
+
 on: workflow_dispatch
- 
+
 jobs:
   export:
     runs-on: windows-latest
 
-  Export-Branch:
-    runs-on: powerapps
-    env:
-      RUNNER_DEBUG: 1
- 
     steps:
- 
     - name: Checkout Repository
       uses: actions/checkout@v3
 
@@ -49,13 +40,3 @@ jobs:
     - name: Import Solution
       run: |
         pac paportal upload --path "exported_solution.zip/portalsitetest---site-p8dn9"
- 
-    - name: Branch Solution
-      id: BranchSolution
-      uses: microsoft/powerplatform-actions/branch-solution@latest
-      with:
-        solution-folder: exported_solution.zip
-        solution-target-folder: exported_solution.zip/
-        branch-name: OLDPORTAL-CI
-        repo-token: ${{ secrets.PAT_TOKEN }}
-        allow-empty-commit: true
