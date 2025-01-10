@@ -4,7 +4,7 @@ name: Export Power Pages to GitHub
 # Pack and create branch
  
 on:
-workflow_dispatch:
+permissions:
  
 jobs:
   export:
