@@ -1,21 +1,12 @@
 name: Export Power Pages to GitHub
-# Export solution from DEV environment
-# Unpack, update version in Solution.xml and .nuspec file
-# Pack and create branch
- 
+
 on: workflow_dispatch
- 
+
 jobs:
   export:
     runs-on: windows-latest
-  
-  Export-Branch:
-    runs-on: powerapps
-    env:
-      RUNNER_DEBUG: 1
- 
+
     steps:
- 
     - name: Checkout Repository
       uses: actions/checkout@v3
 
@@ -60,13 +51,12 @@ jobs:
       run: |
         Write-Host "Files in the current directory:"
         Get-ChildItem -Path . -Recurse
- 
-    - name: Branch Solution
-      id: BranchSolution
-      uses: microsoft/powerplatform-actions/branch-solution@latest
-      with:
-        solution-folder: exported_solution.zip
-        solution-target-folder: exported_solution.zip/
-        branch-name: OLDPORTAL-CI
-        repo-token: ${{ secrets.PAT_TOKEN }}
-        allow-empty-commit: true
+
+    - name: Push ZIP File to GitHub
+      run: |
+        git config --global user.name "GitHub Actions"
+        git config --global user.email "actions@github.com"
+        git remote set-url origin https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com/uzairsuleman786/OldPortalDeployment.git
+        git add exported_solution.zip
+        git commit -m "Automated export of Power Pages solution as ZIP"
+        git push origin main
