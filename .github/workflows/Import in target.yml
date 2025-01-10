@@ -3,8 +3,7 @@ name: Import Power Pages to Target Environment
 # Unpack, update version in Solution.xml and .nuspec file
 # Pack and create branch
  
-on:
-workflow_dispatch:
+on: workflow_dispatch
  
 jobs:
   export:
