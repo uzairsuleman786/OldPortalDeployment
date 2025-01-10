@@ -57,6 +57,7 @@ jobs:
         git config --global user.name "GitHub Actions"
         git config --global user.email "actions@github.com"
         git remote set-url origin https://x-access-token:${{ secrets.PAT_TOKEN }}@github.com/uzairsuleman786/OldPortalDeployment.git
+        git branch NewBranch
         git add exported_solution.zip
         git commit -m "Automated export of Power Pages solution as ZIP"
         git push origin main
