@@ -7,9 +7,7 @@ on:
 permissions:
  
 jobs:
-  export:
-    runs-on: windows-latest
-  
+
   Export-Branch:
     runs-on: powerapps
     env:
