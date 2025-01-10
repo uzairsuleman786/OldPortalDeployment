@@ -3,7 +3,7 @@ name: Export Power Pages to GitHub
 on: workflow_dispatch
 
 jobs:
-  export:
+  Export:
     runs-on: windows-latest
 
     steps:
