@@ -1,4 +1,4 @@
-name: 1.EMPropertyPortal - Export Solution
+name: Export Power Pages to GitHub
 # Export solution from DEV environment
 # Unpack, update version in Solution.xml and .nuspec file
 # Pack and create branch
@@ -6,6 +6,9 @@ name: 1.EMPropertyPortal - Export Solution
 on: workflow_dispatch
  
 jobs:
+  export:
+    runs-on: windows-latest
+  
   Export-Branch:
     runs-on: powerapps
     env:
@@ -13,96 +16,57 @@ jobs:
  
     steps:
  
-        - name: Set Variables
-          id: SetVariables
-          shell: powershell
-          run: |
-            echo "EnvironmentURL=${{ secrets.ENVIRONMENT_URL }}" >> $env:GITHUB_ENV
-            echo "SolutionName=${{ secrets.SOLUTION_NAME }}" >> $env:GITHUB_ENV
-            echo "ApplicationName=${{ secrets.APPLICATION_NAME }}" >> $env:GITHUB_ENV
-            echo "RootPath=$env:GITHUB_WORKSPACE\Solution" >> $env:GITHUB_ENV
- 
-        - name: Checkout Repository
-          id: CheckoutRepository
-          uses: actions/checkout@v2.3.4
-          with:
-            lfs: true
- 
-        - name: Install Power Platform Tools
-          id: InstallPowerPlatformTools
-          uses: microsoft/powerplatform-actions/actions-install@latest
-          with:
-              nuget-feed-override: 'D:\nuget-packages\microsoft.powerapps.cli'
+    - name: Checkout Repository
+      uses: actions/checkout@v3
 
-        - name: Verify Identity
-          id: VerifyIdentity
-          uses: microsoft/powerplatform-actions/who-am-i@latest
-          with:
-            environment-url: ${{ env.EnvironmentURL }}
-            user-name: ${{ secrets.serviceuser }}
-            password-secret: ${{ secrets.serviceuser_password }}
+    - name: Install Power Platform Tools
+      uses: microsoft/powerplatform-actions/actions-install@v1
+
+    - name: Install Power Platform CLI
+      run: |
+        Invoke-WebRequest -Uri https://aka.ms/PowerAppsCLI -OutFile pac.msi
+        Start-Process msiexec.exe -ArgumentList '/i pac.msi /quiet /norestart' -NoNewWindow -Wait
+
+    - name: Add pac to PATH
+      shell: pwsh
+      run: |
+        $pac = (Get-Item "$env:POWERPLATFORMTOOLS_PACPATH").Directory.FullName;
+        "$pac" | Out-File -FilePath $env:GITHUB_PATH -Append
+
+    - name: Authenticate with Power Platform
+      run: |
+        pac auth create --name "OLDPORTAL" --url "https://org9ef0d3ff.crm.dynamics.com" --applicationId ${{ secrets.CLIENT_ID }} --clientSecret ${{ secrets.CLIENT_SECRET }} --tenant ${{ secrets.TENANT_ID }}
+        
+
+    - name: Export Solution
+      run: |
+        pac paportal download --path "exported_solution.zip" --webSiteId "5fea08ee-97cd-ef11-b8e8-6045bd06243c"
+
+    - name: Verify Downloaded File
+      run: |
+        if (Test-Path -Path "exported_solution.zip") {
+          Write-Host "File downloaded successfully: exported_solution.zip"
+        } else {
+          Write-Host "File not found: exported_solution.zip"
+          exit 1
+        }
+
+    - name: Log Current Directory
+      run: |
+        Write-Host "Current directory:"
+        pwd
+
+    - name: Log Directory Contents
+      run: |
+        Write-Host "Files in the current directory:"
+        Get-ChildItem -Path . -Recurse
  
-        - name: Export Solution
-          id: ExportSolution
-          uses: microsoft/powerplatform-actions/export-solution@latest
-          with:
-            environment-url: ${{ env.EnvironmentURL }}
-            user-name: ${{ secrets.serviceuser }}
-            password-secret: ${{ secrets.serviceuser_password }}
-            solution-name: ${{ env.SolutionName }}
-            solution-output-file: out/exported/${{ env.ApplicationName }}.zip
-            managed: true
- 
-        - name: Unpack Solution
-          id: UnpackSolution
-          uses: microsoft/powerplatform-actions/unpack-solution@latest
-          with:
-            solution-file: out/exported/${{ env.ApplicationName }}.zip
-            solution-folder: ${{ env.RootPath }}/${{ env.ApplicationName }}
-            solution-type: 'Managed'
-            overwrite-files: true
- 
-        - name: Update Solution Version
-          id: UpdateSolutionVersion
-          shell: powershell
-          run: |
-            $NuSpecFile = ($env:RootPath + "\" + $env:ApplicationName + ".nuspec")
-            $NuSpecFileContent = ([xml](Get-Content -Path $NuSpecFile -Raw))
-            $NuSpecDetails = ($NuSpecFileContent).package.metadata.title
-            $Version = [version]($NuSpecFileContent).package.metadata.version
-            $NewVersion = [version]::New($Version.Major,$Version.Minor,$Version.Build,$Version.Revision+1)
- 
-            (Get-Content -Path $NuSpecFile -Raw) | ForEach-Object {
-                $_ -Replace $NuSpecDetails, $env:ApplicationName `
-                   -Replace $Version, $NewVersion
-                } | Set-Content -Path $NuSpecFile
-            $ConfigFile = ($env:RootPath + "\" + $env:ApplicationName + "\Other\" + "Solution.xml")
-            $ConfigFileContent = ([xml](Get-Content -Path $ConfigFile -Raw))
-            $Version = [Version]($ConfigFileContent).ImportExportXml.SolutionManifest.Version
-             (Get-Content -Path $ConfigFile -Raw) | ForEach-Object {
-                $_ -Replace $Version, $NewVersion
-                } | Set-Content -Path $ConfigFile   
- 
-        - name: Pack Solution
-          id: PackSolution
-          uses: microsoft/powerplatform-actions/pack-solution@latest
-          with:
-            solution-folder: ${{ env.RootPath }}/${{ env.ApplicationName }}            
-            solution-file: ${{ env.RootPath }}/${{ env.ApplicationName }}.zip
-            solution-type: 'Managed'
- 
-        - name: Clean-Up
-          id: CleanUp
-          shell: powershell
-          run: |
-            Remove-Item ($env:RootPath + "\" + $env:ApplicationName) -Recurse
- 
-        - name: Branch Solution
-          id: BranchSolution
-          uses: microsoft/powerplatform-actions/branch-solution@latest
-          with:
-            solution-folder: ${{ env.RootPath }}
-            solution-target-folder: Solution/
-            branch-name: ${{ env.ApplicationName }}-CI
-            repo-token: ${{ secrets.GITHUB_TOKEN }}
-            allow-empty-commit: true
+    - name: Branch Solution
+      id: BranchSolution
+      uses: microsoft/powerplatform-actions/branch-solution@latest
+      with:
+        solution-folder: exported_solution.zip
+        solution-target-folder: exported_solution.zip/
+        branch-name: OLDPORTAL-CI
+        repo-token: ${{ secrets.PAT_TOKEN }}
+        allow-empty-commit: true
