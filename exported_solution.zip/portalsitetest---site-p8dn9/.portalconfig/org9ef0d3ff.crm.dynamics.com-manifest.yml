@@ -14,11 +14,11 @@ adx_contentsnippet:
   IsDeleted: false
 - RecordId: c7e908ee-97cd-ef11-b8e8-6045bd06243c
   DisplayName: Site name
-  CheckSum: 5f56b19f9f15b4775f8b78c1a1e74ab813302d884d22711b34ec45260df47c30
+  CheckSum: c88e46589dc7251a27befc08bc2d96ca6780cd8e2633fde62e317cd5ee276cb8
   IsDeleted: false
 - RecordId: c8e908ee-97cd-ef11-b8e8-6045bd06243c
   DisplayName: Logo URL
-  CheckSum: 1ceef0be77deea254c912f499b7457fc5e0b923e22ea924ac33ceafdfbf66668
+  CheckSum: c66b06b3b9fef33397ad5a0ad1b0a5edd559a6ac7338828795de3214c44a0426
   IsDeleted: false
 - RecordId: c9e908ee-97cd-ef11-b8e8-6045bd06243c
   DisplayName: Search/Title
@@ -384,7 +384,7 @@ adx_webpage:
   IsDeleted: false
 - RecordId: 4cea08ee-97cd-ef11-b8e8-6045bd06243c
   DisplayName: Home
-  CheckSum: 03c2f87d6eeb98c6c403a42ae8c544b54a675e98bdf55378b1051e74ed8b618e
+  CheckSum: aa39e7deb40a373497d497b64431ba890c9a01b593ed0acf023eb208d0ada9aa
   IsDeleted: false
 - RecordId: 4fea08ee-97cd-ef11-b8e8-6045bd06243c
   DisplayName: Profile
