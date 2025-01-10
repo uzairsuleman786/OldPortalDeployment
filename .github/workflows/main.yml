@@ -3,8 +3,7 @@ name: 1.EMPropertyPortal - Export Solution
 # Unpack, update version in Solution.xml and .nuspec file
 # Pack and create branch
  
-on:
-workflow_dispatch:
+on: workflow_dispatch
  
 jobs:
   Export-Branch:
