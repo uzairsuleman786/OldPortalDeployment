@@ -384,7 +384,7 @@ adx_webpage:
   IsDeleted: false
 - RecordId: 4cea08ee-97cd-ef11-b8e8-6045bd06243c
   DisplayName: Home
-  CheckSum: aa39e7deb40a373497d497b64431ba890c9a01b593ed0acf023eb208d0ada9aa
+  CheckSum: 59e931e70ff5f6043d42491267ee583f4af3dbb112ef899fe8d7e74150093ebd
   IsDeleted: false
 - RecordId: 4fea08ee-97cd-ef11-b8e8-6045bd06243c
   DisplayName: Profile
