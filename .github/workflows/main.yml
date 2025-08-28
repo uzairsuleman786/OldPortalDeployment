@@ -27,7 +27,7 @@ jobs:
 
     - name: Authenticate with Power Platform
       run: |
-        pac auth create --name "OLDPORTAL" --url "https://org9ef0d3ff.crm.dynamics.com" --username "admin@CRM720692.onmicrosoft.com" --password "#W4^eG+p+u5L676wO="
+        pac auth create --name "OLDPORTAL" --url "https://org9ef0d3ff.crm.dynamics.com" --username "admin@CRM720692.onmicrosoft.com" --password "TestPassword"
 
     - name: Create New Branch
       run: |
