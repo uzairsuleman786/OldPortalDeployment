@@ -36,7 +36,7 @@ jobs:
     
     - name: Authenticate with Power Platform
       run: |
-        pac auth create --name "OLDPORTAL" --url "https://orgbc24f670.crm.dynamics.com" --username "admin@CRM720692.onmicrosoft.com" --password "TestPassword"
+        pac auth create --name "OLDPORTAL" --url "https://testdynamicsurl.crm.dynamics.com" --username "testuser@CRM720692.onmicrosoft.com" --password "TestPassword"
     - name: Import Solution
       run: |
         pac paportal upload --path "exported_solution.zip/portalsitetest---site-p8dn9"
